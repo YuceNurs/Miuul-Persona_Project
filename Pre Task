@@ -52,16 +52,21 @@ print(df.pivot_table("PRICE", "COUNTRY", "SOURCE"))
 print("################")
 
 
-Task 2 
-
-What are the average earnings for the breakdown of COUNTRY, SOURCE, SEX, and AGE?
+# TASK 2 : What are the average earnings for the breakdown of COUNTRY, SOURCE, SEX, and AGE?
 print(df.groupby(["COUNTRY","SOURCE","SEX", "AGE"]).agg({"PRICE":"mean"}))
 
-bonus
+#bonus
 print(df.pivot_table("PRICE","AGE", ["SOURCE","SEX"]))
 
-TASK 3: Sort the output by PRICE in descending order using the 'sort_values'method 
+#TASK 3: Sort the output by PRICE in descending order using the 'sort_values'method 
 to better visualize the results from the previous question. Save the output as 'agg_df'.
 
 agg_df = df.groupby(["COUNTRY","SOURCE","SEX", "AGE"]).agg({"PRICE":"mean"}).sort_values('PRICE', ascending=False)
 print(agg_df)
+
+# TASK 4: Convert Names in Index to Column Names
+# In the output of the third task, all variables except for PRICE are index names.
+# Convert these names to column names.
+
+agg_df_new = agg_df.reset_index(["COUNTRY","SOURCE","SEX", "AGE"],inplace=False)
+print(agg_df_new)
