@@ -70,3 +70,14 @@ print(agg_df)
 
 agg_df_new = agg_df.reset_index(["COUNTRY","SOURCE","SEX", "AGE"],inplace=False)
 print(agg_df_new)
+
+# TASK 5: Convert the AGE variable into a categorical variable and add it to agg_df.
+# Convert the numerical variable "Age" into a categorical variable.
+# Create intervals that you believe to be convincing.
+# For example: '0_18', '19_23', '24_30', '31_40', '41_70'
+
+age_bins = [0, 18, 23, 30, 40, float('inf')]
+age_labels = ['0_18', '19_23', '24_30', '31_40', '41_70']
+age_new= df["NEW_AGE"]=pd.cut(df["AGE"], bins=age_bins,  labels= age_labels , right=True)
+print(age_new)
+
