@@ -1,2 +1,52 @@
 Task 1: Answer the Following Questions
 
+import pandas as pd
+import seaborn as sns
+import numpy as np
+import matplotlib.pyplot as plt
+
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width',500)
+
+df = pd.read_csv("C:\Program Files\python\persona.csv")
+print(df)
+df.head()
+df.describe().T
+print(df.describe().T)
+df.isnull().values.any()
+print("################")
+# Price: Müşterinin harcama tutarı
+# Source: Müşterinin bağlandığı cihaz türü
+# Sex: Müşterinin cinsiyeti
+# Country: Müşterinin ülkesi
+# Age: Müşterinin yaşı
+
+# How many unique SOURCEs are there? What are their frequencies?
+print(df["SOURCE"].unique())
+print(df["SOURCE"].value_counts())
+print("1################")
+# Soru 3:How many unique PRICEs are there?
+print(df["PRICE"].unique())
+print("################")
+# Soru 4:How many sales have been made for each unique PRICE?
+print(df["PRICE"].value_counts())
+print("################")
+# Soru 5:How many sales have been made from each country?
+print(df["COUNTRY"].value_counts())
+print("################")
+# Soru 6: How much total revenue has been earned from sales in each country?
+print(df.groupby("COUNTRY")["PRICE"].sum())
+print("################")
+# Soru 7: What are the sales counts for each SOURCE type?
+print(df["SOURCE"].value_counts())
+#print(df.groupby("SOURCE")["PRICE"].value_counts())
+print("################")
+# Soru 8: What are the average PRICES for each country?
+print(df.groupby("COUNTRY")["PRICE"].mean())
+print("################")
+# Soru 9: What are the average PRICES for each SOURCE?
+print(df.groupby("SOURCE")["PRICE"].mean())
+print("################")
+# Soru 10:What are the average PRICES for each combination of COUNTRY-SOURCE?
+print(df.pivot_table("PRICE", "COUNTRY", "SOURCE"))
+print("################")
