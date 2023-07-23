@@ -53,5 +53,10 @@ print("################")
 
 
 TAsk 2 
+
 What are the average earnings for the breakdown of COUNTRY, SOURCE, SEX, and AGE?
+print(df.groupby(["COUNTRY","SOURCE","SEX", "AGE"]).agg({"PRICE":"mean"}))
+
+bonus
 print(df.pivot_table("PRICE","AGE", ["SOURCE","SEX"]))
+
