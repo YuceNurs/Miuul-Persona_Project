@@ -1,0 +1,56 @@
+import pandas as pd
+import seaborn as sns
+import numpy as np
+import matplotlib.pyplot as plt
+
+pd.set_option('display.max_columns', None)
+
+
+df = pd.read_csv("C:\Program Files\python\persona.csv")
+print(df)
+df.head()
+agg_df = df.groupby(["COUNTRY","SOURCE","SEX", "AGE"]).agg({"PRICE":"mean"}).sort_values('PRICE', ascending=False)
+print(agg_df)
+
+agg_df = agg_df.sort_values('PRICE', ascending =False)
+agg_df = agg_df.reset_index()
+agg_df.columns
+
+age_bins = [0, 18, 23, 30, 40, agg_df['AGE'].max()]
+age_labels = ['0_18', '19_23', '24_30', '31_40', '41_' +str(agg_df['AGE'].max())]
+pd.cut(agg_df['AGE'], bins=age_bins, labels=age_labels)
+agg_df['AGE_CAT'] = pd.cut(agg_df['AGE'], bins=age_bins, labels=age_labels)
+agg_df.head()
+
+pd.cut(agg_df['AGE'], bins=age_bins, labels=age_labels)
+agg_df.drop(['AGE', 'PRICE'], axis=1).values
+liste = ['A', 'B', 'C']
+'-'.join(liste)
+agg_df["CUSTOMERS_LEVEL_BASED"] = ["_".join(i).upper() for i in agg_df.drop(['AGE', 'PRICE'], axis=1).values]
+["{}_{}_{}_{}".format(x.upper(),y.upper(),z.upper(),k) for x,y,z,k in zip(agg_df["COUNTRY"],agg_df["SOURCE"],agg_df["SEX"],agg_df["AGE_CAT"])]
+#[col[0].upper()+"_"+col[1].upper()+"_"+col[2].upper()+"_"+col[3].upper() for col in agg_df[agg_cols].values ]
+agg_cols=["COUNTRY","SOURCE","SEX","AGE_CAT"]
+
+agg_df.head()
+agg_df = agg_df[['CUSTOMERS_LEVEL_BASED', 'PRICE']]
+
+agg_df = agg_df.groupby('CUSTOMERS_LEVEL_BASED')['PRICE'].mean().reset_index()
+print(agg_df)
+
+[23, 27, 34, 34, 35, 39, 41, 48]
+
+agg_df['SEGMENT'] = pd.qcut(agg_df.PRICE, q=4, labels=['D', 'C', 'B','A'])
+agg_df.head()
+
+agg_df.groupby('SEGMENT').agg({'PRICE': 'mean'}).reset_index()
+
+new_user = 'TUR_ANDROID_FEMALE_31_40'
+agg_df[agg_df['CUSTOMERS_LEVEL_BASED'] == new_user]
+
+new_user = 'FRA_IOS_FEMALE_31_40'
+agg_df[agg_df['CUSTOMERS_LEVEL_BASED'] == new_user]
+agg_df[agg_df['CUSTOMERS_LEVEL_BASED'] == 'BRA_ANDROID_FEMALE_0_18']
+
+fin =df[['PRICE', 'AGE']].corr()
+print(fin)
+
