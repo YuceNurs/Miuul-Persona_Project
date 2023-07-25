@@ -14,6 +14,14 @@ df.head()
 df.describe().T
 print(df.describe().T)
 df.isnull().values.any()
+df.info()
+df.head()
+df.tail()
+df.shape
+df.columns
+df.index
+
+
 print("################")
 # Price: Müşterinin harcama tutarı
 # Source: Müşterinin bağlandığı cihaz türü
@@ -27,6 +35,7 @@ print(df["SOURCE"].value_counts())
 print("1################")
 # Soru 3:How many unique PRICEs are there?
 print(df["PRICE"].unique())
+df.PRICE.value_counts()
 print("################")
 # Soru 4:How many sales have been made for each unique PRICE?
 print(df["PRICE"].value_counts())
@@ -43,6 +52,7 @@ print(df["SOURCE"].value_counts())
 print("################")
 # Soru 8: What are the average PRICES for each country?
 print(df.groupby("COUNTRY")["PRICE"].mean())
+df.groupby('COUNTRY').agg({'PRICE': 'mean'})
 print("################")
 # Soru 9: What are the average PRICES for each SOURCE?
 print(df.groupby("SOURCE")["PRICE"].mean())
@@ -61,23 +71,27 @@ print(df.pivot_table("PRICE","AGE", ["SOURCE","SEX"]))
 #TASK 3: Sort the output by PRICE in descending order using the 'sort_values'method 
 to better visualize the results from the previous question. Save the output as 'agg_df'.
 
-agg_df = df.groupby(["COUNTRY","SOURCE","SEX", "AGE"]).agg({"PRICE":"mean"}).sort_values('PRICE', ascending=False)
-print(agg_df)
+agg_df = agg_df.sort_values('PRICE', ascending =False)
 
 # TASK 4: Convert Names in Index to Column Names
 # In the output of the third task, all variables except for PRICE are index names.
 # Convert these names to column names.
 
-agg_df_new = agg_df.reset_index(["COUNTRY","SOURCE","SEX", "AGE"],inplace=False)
-print(agg_df_new)
+agg_df = agg_df.reset_index()
+agg_df.columns
 
 # TASK 5: Convert the AGE variable into a categorical variable and add it to agg_df.
 # Convert the numerical variable "Age" into a categorical variable.
 # Create intervals that you believe to be convincing.
 # For example: '0_18', '19_23', '24_30', '31_40', '41_70'
 
-age_bins = [0, 18, 23, 30, 40, float('inf')]
-age_labels = ['0_18', '19_23', '24_30', '31_40', '41_70']
-age_new= df["NEW_AGE"]=pd.cut(df["AGE"], bins=age_bins,  labels= age_labels , right=True)
-print(age_new)
+age_bins = [0, 18, 23, 30, 40, agg_df['AGE'].max()]
+age_labels = ['0_18', '19_23', '24_30', '31_40', '41_' +str(agg_df['AGE'].max())]
+pd.cut(agg_df['AGE'], bins=age_bins, labels=age_labels)
+agg_df['AGE_CAT'] = pd.cut(agg_df['AGE'], bins=age_bins, labels=age_labels)
+agg_df.head()
+agg_df.drop(['AGE', 'PRICE'], axis=1).values
+liste = ['A', 'B', 'C']
+'-'.join(liste)
+agg_df["CUSTOMERS_LEVEL_BASED"] = ["_".join(i).upper() for i in agg_df.drop(['AGE', 'PRICE'], axis=1).values]
 
